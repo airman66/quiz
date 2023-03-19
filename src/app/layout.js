@@ -2,11 +2,6 @@
 import './globals.css'
 import {AppBar, Toolbar, Typography} from "@mui/material";
 
-export const metadata = {
-  title: 'Главная',
-  description: 'Главная страница',
-}
-
 export default function RootLayout({ children }) {
   return (
     <html lang="ru">
