@@ -1,34 +1,43 @@
 "use client";
+
 import {Breadcrumbs, Card, CardActionArea, CardContent, CardMedia, Grid, Typography} from "@mui/material";
 import Link from "next/link";
 import Animation from "@/app/components/animation";
 
-export default function Home() {
-    const Student = () => <Animation type="student"/>;
-    const Teacher = () => <Animation type="teacher"/>;
+export default function page() {
+    const Settings = () => <Animation type="settings" />;
+    const Quizzes = () => <Animation type="quizzes" />;
+
     return (
         <div>
             <div className="container">
                 <div style={{padding: 15, backgroundColor: "white", width: "fit-content", marginTop: 60, borderRadius: 7}}>
                     <Breadcrumbs aria-label="breadcrumb">
-                        <Typography color="#039be5">Главная</Typography>
+                        <Link
+                            underline="hover"
+                            color="inherit"
+                            href="/"
+                        >
+                            Главная
+                        </Link>
+                        <Typography color="#039be5">Ученик</Typography>
                     </Breadcrumbs>
                 </div>
                 <div style={{marginTop: 50}}>
                     <Grid container spacing={0}>
                         <Grid item xs={6}>
-                            <Link href="/student/">
+                            <Link href="/student/quizzes/">
                                 <Card>
                                     <CardActionArea>
                                         <CardMedia
-                                            component={Student}
+                                            component={Quizzes}
                                         />
                                         <CardContent>
                                             <Typography gutterBottom variant="h5" component="div">
-                                                Ученик
+                                                Викторины
                                             </Typography>
                                             <Typography variant="body2" color="text.secondary">
-                                                Страница ученика
+                                                Пройдите викторину
                                             </Typography>
                                         </CardContent>
                                     </CardActionArea>
@@ -36,18 +45,18 @@ export default function Home() {
                             </Link>
                         </Grid>
                         <Grid item xs={6}>
-                            <Link href="/teacher/">
+                            <Link href="/student/settings/">
                                 <Card>
                                     <CardActionArea>
                                         <CardMedia
-                                            component={Teacher}
+                                            component={Settings}
                                         />
                                         <CardContent>
                                             <Typography gutterBottom variant="h5" component="div">
-                                                Учитель
+                                                Настройки
                                             </Typography>
                                             <Typography variant="body2" color="text.secondary">
-                                                Страница учителя
+                                                Настройте свой профиль
                                             </Typography>
                                         </CardContent>
                                     </CardActionArea>
@@ -58,5 +67,5 @@ export default function Home() {
                 </div>
             </div>
         </div>
-    )
-};
+    );
+}
