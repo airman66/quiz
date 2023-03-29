@@ -4,11 +4,13 @@ import "./index.css";
 import {Button, Dialog, DialogActions, DialogContent, DialogContentText, DialogTitle, Typography} from "@mui/material";
 import { DataGrid } from '@mui/x-data-grid';
 import {useEffect, useState} from "react";
+import {defaultQuizzes} from "@/app/db";
 
 const RemoveTable = () => {
     const [open, setOpen] = useState(false);
     const [quizzes, setQuizzes] = useState([]);
     const [selected, setSelected] = useState([]);
+    const [openAlarm, setOpenAlarm] = useState(false);
 
     const columns = [
         { field: 'id', headerName: 'id', width: 150, disableColumnMenu: true, filterable: false, sortable: false },
@@ -44,7 +46,7 @@ const RemoveTable = () => {
             });
             return !isRemove;
         });
-        localStorage.setItem("quizzes", JSON.stringify(newQuizzes));
+        localStorage.setItem("quizzes_db", JSON.stringify(newQuizzes));
         setQuizzes(newQuizzes);
     };
 
@@ -57,7 +59,7 @@ const RemoveTable = () => {
     };
 
     useEffect(() => {
-        const quizzesFromLocalStorage = JSON.parse(localStorage.getItem("quizzes")) || [];
+        const quizzesFromLocalStorage = JSON.parse(localStorage.getItem("quizzes_db")) || defaultQuizzes;
         setQuizzes(quizzesFromLocalStorage);
     }, []);
 
@@ -84,14 +86,57 @@ const RemoveTable = () => {
                     </Button>
                 </DialogActions>
             </Dialog>
+            <Dialog
+                open={openAlarm}
+                aria-labelledby="alert-dialog-title"
+                aria-describedby="alert-dialog-description"
+            >
+                <DialogTitle id="alert-dialog-title">
+                    {"Удалить"}
+                </DialogTitle>
+                <DialogContent>
+                    <DialogContentText id="alert-dialog-description">
+                        Удаление этой викторины запрещено.
+                    </DialogContentText>
+                </DialogContent>
+                <DialogActions>
+                    <Button onClick={() => setOpenAlarm(false)}>
+                        Ок
+                    </Button>
+                </DialogActions>
+            </Dialog>
             <Typography variant="h4" color="inherit" component="h1">
                 Удалить
             </Typography>
             <div style={{marginTop: 30, height: 400, width: '100%' }}>
                 <DataGrid
-                    onRowSelectionModelChange={e => setSelected(e)}
+                    onRowSelectionModelChange={e => {
+                        let ok = true;
+                        e.forEach(id => {
+                            if (quizzes.filter(quiz => quiz.id === id)[0].removeAllow) {
+                                if (ok !== false) {
+                                    ok = true;
+                                }
+                            } else {
+                                ok = false;
+                            }
+                        });
+                        if (ok) {
+                            setSelected(e);
+                        } else {
+                            if (selected.length - e.length === -1) {
+                                setOpenAlarm(true);
+                            } else {
+                                const newSelected = e.filter(id => {
+                                   return quizzes.filter(quiz => quiz.id === id)[0].removeAllow;
+                                });
+                                setSelected(newSelected);
+                            }
+                        }
+                    }}
                     rows={quizzes}
                     columns={columns}
+                    rowSelectionModel={selected}
                     checkboxSelection
                 />
             </div>

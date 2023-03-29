@@ -19,6 +19,7 @@ import {
 import {useEffect, useState} from "react";
 import AddIcon from '@mui/icons-material/Add';
 import RemoveIcon from '@mui/icons-material/Remove';
+import {defaultQuizzes} from "@/app/db";
 
 function makeid(length) {
     let result = '';
@@ -53,11 +54,14 @@ const createQuizForm = () => {
                 subject: formData.subject,
                 class: formData.class,
                 description: formData.description.trim(),
-                questions
+                questions,
+                editAllow: true,
+                removeAllow: true
             };
-            const quizzes = JSON.parse(localStorage.getItem("quizzes")) || [];
+            const quizzes = JSON.parse(localStorage.getItem("quizzes_db")) || defaultQuizzes;
+            console.log(quizzes);
             quizzes.push(quizObject);
-            localStorage.setItem("quizzes", JSON.stringify(quizzes));
+            localStorage.setItem("quizzes_db", JSON.stringify(quizzes));
             localStorage.setItem("teacher_draft", null);
             setFormData(initialFormData);
             setQuestions([]);

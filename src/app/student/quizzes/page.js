@@ -2,12 +2,13 @@
 import {Breadcrumbs, Card, CardActionArea, CardContent, CardMedia, Grid, Typography} from "@mui/material";
 import Link from "next/link";
 import {useEffect, useState} from "react";
+import {defaultQuizzes} from "@/app/db";
 
 const page = () => {
     const [quizzes, setQuizzes] = useState([]);
 
     useEffect(() => {
-        const quizzesFromLocalStorage = JSON.parse(localStorage.getItem("quizzes")) || [];
+        const quizzesFromLocalStorage = JSON.parse(localStorage.getItem("quizzes_db")) || defaultQuizzes;
         setQuizzes(quizzesFromLocalStorage);
     }, []);
 

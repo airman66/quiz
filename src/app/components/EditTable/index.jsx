@@ -5,13 +5,14 @@ import "./index.css";
 import {Paper, Table, TableBody, TableCell, TableContainer, TableHead, TableRow, Typography} from "@mui/material";
 import {useEffect, useState} from "react";
 import {useRouter} from "next/navigation";
+import {defaultQuizzes} from "@/app/db";
 
 const EditTable = () => {
     const router = useRouter();
     const [quizzes, setQuizzes] = useState([]);
 
     useEffect(() => {
-        const quizzesFromLocalStorage = JSON.parse(localStorage.getItem("quizzes")) || [];
+        const quizzesFromLocalStorage = JSON.parse(localStorage.getItem("quizzes_db")) || defaultQuizzes;
         setQuizzes(quizzesFromLocalStorage);
     }, []);
 
