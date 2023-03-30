@@ -3,9 +3,11 @@ import {Breadcrumbs, Card, CardActionArea, CardContent, CardMedia, Grid, Typogra
 import Link from "next/link";
 import {useEffect, useState} from "react";
 import {defaultQuizzes} from "@/app/db";
+import {useRouter} from "next/navigation";
 
 const page = () => {
     const [quizzes, setQuizzes] = useState([]);
+    const router = useRouter();
 
     useEffect(() => {
         const quizzesFromLocalStorage = JSON.parse(localStorage.getItem("quizzes_db")) || defaultQuizzes;
@@ -40,7 +42,7 @@ const page = () => {
                             Викторин нет
                         </Typography>}
                         {quizzes.map(quiz => (
-                            <Grid key={quiz.id} style={{marginBottom: 25}} item xs={12}>
+                            <Grid onClick={() => router.push(`/student/quizzes/${quiz.id}`)} key={quiz.id} style={{marginBottom: 25}} item xs={12}>
                                 <Card>
                                     <CardActionArea>
                                         <CardContent>
